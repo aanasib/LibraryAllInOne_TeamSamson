@@ -2,6 +2,7 @@ package com.library.steps;
 
 import com.library.utility.ConfigurationReader;
 import com.library.utility.LibraryAPI_Util;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,42 +16,45 @@ import org.hamcrest.Matchers;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class APIStepDefs {
+public class US01_StepDefs_SS {
 
     RequestSpecification givenPart;
     Response response;
     ValidatableResponse thenPart;
+
     /**
      * US 01 RELATED STEPS
-     *
      */
-    @Given("I logged Library api as a {string}")
-    public void i_logged_library_api_as_a(String userType) {
+    @Given("I logged Library api as a {string}. SS")
+    public void iLoggedLibraryApiAsASS(String userType) {
 
         givenPart = given().log().uri()
                 .header("x-library-token", LibraryAPI_Util.getToken(userType));
     }
-    @Given("Accept header is {string}")
-    public void accept_header_is(String contentType) {
+
+    @And("Accept header is {string}. SS")
+    public void acceptHeaderIsSS(String contentType) {
         givenPart.accept(contentType);
     }
 
-    @When("I send GET request to {string} endpoint")
-    public void i_send_get_request_to_endpoint(String endpoint) {
+    @When("I send GET request to {string} endpoint. SS")
+    public void iSendGETRequestToEndpointSS(String endpoint) {
         response = givenPart.when().get(ConfigurationReader.getProperty("library.baseUri") + endpoint).prettyPeek();
         thenPart = response.then();
     }
-    @Then("status code should be {int}")
-    public void status_code_should_be(Integer statusCode) {
+
+    @Then("status code should be {int}. SS")
+    public void statusCodeShouldBeSS(int statusCode) {
         thenPart.statusCode(statusCode);
     }
-    @Then("Response Content type is {string}")
-    public void response_content_type_is(String contentType) {
+
+    @And("Response Content type is {string}. SS")
+    public void responseContentTypeIsSS(String contentType) {
         thenPart.contentType(contentType);
     }
-    @Then("{string} field should not be null")
-    public void field_should_not_be_null(String path) {
+
+    @And("{string} field should not be null. SS")
+    public void fieldShouldNotBeNullSS(String path) {
         thenPart.body(path, everyItem(notNullValue()));
     }
-
 }
